@@ -2,6 +2,10 @@ const router = global.router;
 
 const Dog = require('../model/DogModel');
 const mongoose = require('mongoose');
+const onesignal = require('simple-onesignal');
+const ONESIGNAL_APP_ID = '5ceaa120-c010-4fef-bfd4-75246165f4c2';
+const ONESIGNAL_REST_API_KEY = 'NDU1Y2UxNzEtOGEyZC00Y2I3LTgxNGMtN2Y5MDFhOTMwN2Uy';
+onesignal.configure(ONESIGNAL_APP_ID, ONESIGNAL_REST_API_KEY);
 
 router.get('/list_all_dog', (request, response, next) => {
   Dog.find({}).limit(100).sort({name: 1}).select({
@@ -115,6 +119,11 @@ router.post('/insert_new_dog', (request, response, next) => {
         message: `Error is: ${err}`
       })
     } else {
+      onesignal.sendMessage("Add new dog successful!", (err, resp) => {
+        if (err) {
+          console.error(err);
+        }
+      });
       response.json({
         result: "ok",
         data: {
