@@ -144,6 +144,14 @@ router.delete('/delete_a_dog', (req, res, next) => {
         message: `Error is: ${err}`
       });
     } else {
+      onesignal.sendMessage({
+        contents: {en: "Delete successfully!!!"},
+        included_segments: ['All'],
+      }, (err, resp) => {
+        if (err) {
+          console.error(err);
+        }
+      });
       res.json({
         result: "ok",
         message: "Delete successfully!"
