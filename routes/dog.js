@@ -96,6 +96,11 @@ router.put('/update_a_dog', (req, res, next) => {
         message: "Update failed"
       })
     } else {
+      onesignal.sendMessage("Update success!", (err, resp) => {
+        if (err) {
+          console.error(err);
+        }
+      });
       res.json({
         result: "ok",
         data: updatedDog,
@@ -119,7 +124,7 @@ router.post('/insert_new_dog', (request, response, next) => {
         message: `Error is: ${err}`
       })
     } else {
-      onesignal.sendMessage("Add new dog successful!", (err, resp) => {
+      onesignal.sendMessage("Add new dog success!", (err, resp) => {
         if (err) {
           console.error(err);
         }
@@ -145,7 +150,7 @@ router.delete('/delete_a_dog', (req, res, next) => {
       });
     } else {
       onesignal.sendMessage({
-        contents: {en: "Delete successfully!!!"},
+        contents: {en: "Delete success!"},
         included_segments: ['All'],
       }, (err, resp) => {
         if (err) {
