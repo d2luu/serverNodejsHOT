@@ -150,7 +150,7 @@ router.delete('/delete_a_dog', (req, res, next) => {
       });
     } else {
       onesignal.sendMessage({
-        contents: {en: "Delete success!"},
+        contents: {en: "削除しました!"},
         included_segments: ['All'],
       }, (err, resp) => {
         if (err) {
