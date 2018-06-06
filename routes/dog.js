@@ -124,7 +124,10 @@ router.post('/insert_new_dog', (request, response, next) => {
         message: `Error is: ${err}`
       })
     } else {
-      onesignal.sendMessage("Add new dog success!", (err, resp) => {
+      onesignal.sendMessage({
+        contents: {en: "Add new dog success!", url: "mydog://mydog/doglist"},
+        included_segments: ['All'],
+      }, (err, resp) => {
         if (err) {
           console.error(err);
         }
@@ -150,7 +153,7 @@ router.delete('/delete_a_dog', (req, res, next) => {
       });
     } else {
       onesignal.sendMessage({
-        contents: {en: "削除しました!"},
+        contents: {en: "削除しました!", targetUrl: "mydog://mydog/doglist"},
         included_segments: ['All'],
       }, (err, resp) => {
         if (err) {
