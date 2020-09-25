@@ -8,7 +8,9 @@ const ONESIGNAL_REST_API_KEY = 'NDU1Y2UxNzEtOGEyZC00Y2I3LTgxNGMtN2Y5MDFhOTMwN2Uy
 onesignal.configure(ONESIGNAL_APP_ID, ONESIGNAL_REST_API_KEY);
 
 router.get('/list_all_dog', (request, response, next) => {
-  Dog.find({}).limit(100).sort({name: 1}).select({
+  Dog.find({}).limit(100).sort({
+    name: 1
+  }).select({
     name: 1,
     dogDescription: 1,
     created_at: 1,
@@ -43,7 +45,9 @@ router.get('/get_dog_with_name', (request, response, next) => {
     name: new RegExp(request.query.name, 'i')
   };
   const limit = parseInt(request.query.limit) > 0 ? parseInt(request.query.limit) : 100;
-  Dog.find(criteria).limit(limit).sort({name: 1}).select({
+  Dog.find(criteria).limit(limit).sort({
+    name: 1
+  }).select({
     name: 1,
     dogDescription: 1,
     created_at: 1,
@@ -80,7 +84,7 @@ router.put('/update_a_dog', (req, res, next) => {
   let newName = req.body.name;
   let newDogDescription = req.body.dogDescription;
 
-  if (newName && newName .length > 2) {
+  if (newName && newName.length > 2) {
     newValues.name = newName;
     newValues.dogDescription = newDogDescription;
   }
@@ -88,7 +92,9 @@ router.put('/update_a_dog', (req, res, next) => {
     new: true,
     multi: true
   };
-  Dog.findOneAndUpdate(conditions, {$set: newValues}, options, (err, updatedDog) => {
+  Dog.findOneAndUpdate(conditions, {
+    $set: newValues
+  }, options, (err, updatedDog) => {
     if (err) {
       res.json({
         result: "failed",
@@ -125,7 +131,10 @@ router.post('/insert_new_dog', (request, response, next) => {
       })
     } else {
       onesignal.sendMessage({
-        contents: {en: "Add new dog success!", url: "mydog://mydog/doglist"},
+        contents: {
+          en: "Add new dog success!",
+          url: "mydog://mydog/doglist"
+        },
         included_segments: ['All'],
       }, (err, resp) => {
         if (err) {
@@ -145,7 +154,9 @@ router.post('/insert_new_dog', (request, response, next) => {
 });
 
 router.delete('/delete_a_dog', (req, res, next) => {
-  Dog.findOneAndRemove({_id: mongoose.Types.ObjectId(req.body.dog_id)}, (err) => {
+  Dog.findOneAndRemove({
+    _id: mongoose.Types.ObjectId(req.body.dog_id)
+  }, (err) => {
     if (err) {
       res.json({
         result: "failed",
@@ -153,7 +164,10 @@ router.delete('/delete_a_dog', (req, res, next) => {
       });
     } else {
       onesignal.sendMessage({
-        contents: {en: "削除しました!", targetUrl: "mydog://mydog/doglist"},
+        contents: {
+          en: "削除しました!",
+          targetUrl: "mydog://mydog/doglist"
+        },
         included_segments: ['All'],
       }, (err, resp) => {
         if (err) {

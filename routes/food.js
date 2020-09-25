@@ -3,7 +3,9 @@ const Food = require('../model/FoodModel');
 
 router.get('/list_all_food', (req, res, next) => {
   // res.end("GET request => list_all_food");
-  Food.find({}).limit(100).sort({name: 1}).select({
+  Food.find({}).limit(100).sort({
+    name: 1
+  }).select({
     name: 1,
     foodDescription: 1,
     created_date: 1,
@@ -57,7 +59,9 @@ router.get('/list_foods_with_criteria', (req, res, next) => {
     name: new RegExp(req.query.name, 'i')
   };
   const limit = parseInt(req.query.limit) > 0 ? parseInt(req.query.limit) : 100;
-  Food.find(criteria).limit(limit).sort({name: 1}).select({
+  Food.find(criteria).limit(limit).sort({
+    name: 1
+  }).select({
     name: 1,
     foodDescription: 1,
     created_date: 1,
